@@ -1,0 +1,1581 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Kasia Cichosz – graphic design, typography, web building, branding."><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%A4%AB%3C/text%3E%3C/svg%3E"><title>Kasia Cichosz Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500&display=swap">
+<style>
+  /* Layout: hairline-ruled bands, black and white only. A sheet of paper with a folded corner carries the
+     giant thin caps headline, a short intro sits right. Work is a filterable list of rows: two photos,
+     title, a few facts. A project opens full screen, story on the left, credits on the right.
+     Everything is available in Polish and English. */
+  :root {
+    --bg: #ffffff;
+    --fg: #0f120e;
+    --muted: #767b72;
+    --line: #cdd0c9;
+    --ph: #eaece7;
+    --font: 'Geist', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    --gutter: clamp(16px, 3.2vw, 44px);
+    --ui: clamp(0.875rem, 3.5vw, 1rem);
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html.locked { overflow: hidden; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font: 300 1rem/1.5 var(--font);
+    padding-inline: var(--gutter);
+    padding-block: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a, button { font: inherit; }
+  :focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+
+  /* Small label over a value, used for facts and credits */
+  .k {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .v { display: block; font-size: 0.95rem; font-weight: 400; }
+  .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* Tooltip on email links */
+  .tip { position: relative; }
+  .tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 20;
+    width: max-content;
+    max-width: min(260px, 80vw);
+    padding: 10px 14px;
+    background: #000;
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0;
+    text-transform: none;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .tip:hover::after, .tip:focus-visible::after { opacity: 1; transform: none; }
+  .tip--left::after { right: auto; left: 0; }
+
+  /* Navbar: name and shush on the left, language switch and email on the right */
+  .nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 8px 28px;
+    padding-block: 18px;
+    background: var(--bg);
+    font-size: var(--ui);
+    font-weight: 400;
+  }
+  .nav-hi { margin: 0; }
+  .nav-name { display: inline-flex; align-items: center; gap: 0.35em; white-space: nowrap; }
+  .shh { font-size: 1.1em; line-height: 1; }
+  .lang { display: flex; gap: 14px; }
+  .lang button {
+    padding: 2px 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .lang button:hover { color: var(--fg); }
+  .lang button[aria-pressed="true"] {
+    color: var(--fg);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+  }
+  .mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color 0.15s;
+  }
+  .mail svg { width: 1.4em; height: 1.4em; flex: none; }
+  .mail:hover, .mail:focus-visible { color: var(--muted); }
+  @media (max-width: 640px) {
+    .nav { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "hi lang" "mail mail"; }
+    .nav-hi { grid-area: hi; }
+    .nav-hi > span { display: block; }
+    .nav-name { display: flex; }
+    .lang { grid-area: lang; align-self: start; }
+    .mail { grid-area: mail; justify-self: start; }
+  }
+
+  main { padding-bottom: clamp(64px, 9vw, 120px); }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+    padding-block: clamp(40px, 8vw, 120px) clamp(40px, 6vw, 88px);
+  }
+  @media (min-width: 900px) {
+    .hero { grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr); gap: clamp(32px, 6vw, 96px); }
+  }
+  .giant {
+    margin: 0;
+    font-weight: 200;
+    font-size: clamp(2.25rem, 6.4vw, 6.5rem);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .intro { display: grid; gap: 22px; margin: 0; font-size: var(--ui); font-weight: 400; }
+  .intro p { margin: 0; line-height: 1.45; max-width: 30em; }
+  .intro .where { display: flex; align-items: center; gap: 0.5em; }
+  .where svg { width: 1.25em; height: 1.25em; flex: none; }
+  .studio {
+    color: inherit;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .studio svg { width: 0.95em; height: 0.95em; margin-left: 0.3em; vertical-align: -0.12em; }
+  .studio:hover, .studio:focus-visible { color: var(--muted); }
+
+  /* Headline on a sheet of paper with a folded corner. Unfold it to see what else I make. */
+  .paper {
+    --c: clamp(32px, 4.2vw, 52px);
+    position: relative;
+    display: grid;
+  }
+  .face, .under { grid-area: 1 / 1; padding: clamp(20px, 3vw, 40px); }
+  .face {
+    position: relative;
+    z-index: 1;
+    padding-bottom: clamp(44px, 5vw, 60px);
+    border: 1px solid var(--fg);
+    background: var(--bg);
+    -webkit-mask-image: linear-gradient(135deg, #000 calc(100% - var(--c) * 0.7071), transparent calc(100% - var(--c) * 0.7071));
+    mask-image: linear-gradient(135deg, #000 calc(100% - var(--c) * 0.7071), transparent calc(100% - var(--c) * 0.7071));
+  }
+  .paper.open .face { pointer-events: none; }
+  .under {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+    border: 1px solid var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .under-text {
+    margin: 0;
+    max-width: 22em;
+    font-size: clamp(1.75rem, 4.6vw, 4.6rem);
+    font-weight: 200;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .flap {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: block;
+    width: min(var(--c), var(--ph, 200px));
+    aspect-ratio: 1;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .flap polygon { fill: var(--bg); stroke: var(--fg); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-linejoin: miter; }
+  .tipfill {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    width: min(var(--c), var(--ph, 200px));
+    aspect-ratio: 1;
+    background: var(--fg);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    pointer-events: none;
+  }
+  .hint {
+    position: absolute;
+    right: calc(var(--c) + 12px);
+    bottom: 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    color: var(--fg);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .hint svg { width: 1.3em; height: 1.3em; flex: none; }
+  .corner {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    width: 112px;
+    height: 112px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .paper.open .corner { display: none; }
+  .refold {
+    align-self: flex-end;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 0 4px;
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    background: none;
+    color: var(--bg);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .refold:hover, .refold:focus-visible { color: var(--muted); }
+  .paper:not(.open) .refold { visibility: hidden; }
+
+  /* Clients marquee. Every logo file is already a flat black mark on a transparent background
+     (see CLAUDE.md), so no filter is needed here. Optical sizing is per logo, not just by height:
+     a wide/flat mark is capped by width (.logo-wide), a compact/square mark is allowed a touch more
+     height (.logo-compact), everything else uses the shared default height. */
+  .clients { overflow: hidden; padding-block: 22px; }
+  .track { display: flex; align-items: center; width: max-content; animation: drift 80s linear infinite; }
+  .clients:hover .track { animation-play-state: paused; }
+  .group { display: flex; align-items: center; flex: none; margin: 0; padding: 0; list-style: none; }
+  .client {
+    display: flex;
+    align-items: center;
+    flex: none;
+    padding-right: clamp(32px, 5vw, 72px);
+    font-size: clamp(1.05rem, 1.8vw, 1.5rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .client img { display: block; height: 2.2rem; width: auto; }
+  .client img.logo-compact { height: 2.4rem; }
+  .client img.logo-small { height: 1.5rem; }
+  .client img.logo-big { height: 3.6rem; }
+  .client img.logo-wide { height: auto; width: 9rem; }
+  .client-text { color: var(--fg); font-weight: 500; text-decoration: none; }
+  @keyframes drift { to { transform: translateX(-50%); } }
+
+  /* Left rail (filters) + content */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-block: clamp(32px, 5vw, 64px);
+  }
+  @media (min-width: 900px) {
+    .split { grid-template-columns: minmax(160px, 23%) minmax(0, 1fr); gap: clamp(24px, 3vw, 44px); }
+  }
+  .rail { margin: 0; font-size: 0.95rem; font-weight: 400; }
+  @media (min-width: 900px) {
+    .rail-box { position: sticky; align-self: start; top: calc(env(safe-area-inset-top, 0px) + 84px); }
+  }
+  .split + .split { border-top: 1px solid var(--line); }
+
+  /* Role filters */
+  .filters { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+  .filter {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    text-align: left;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .filter:hover, .filter[aria-pressed="true"] { color: var(--fg); }
+  .filter[aria-pressed="true"] { font-weight: 500; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  @media (min-width: 900px) {
+    .filters { flex-direction: column; flex-wrap: nowrap; gap: 0; }
+    .filter { padding: 8px 0; }
+  }
+
+  /* Work rows */
+  .rows { display: flex; flex-direction: column; }
+  .row {
+    display: grid;
+    gap: 18px;
+    width: 100%;
+    margin: 0;
+    padding: 0 0 clamp(28px, 4vw, 48px);
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: none;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .row + .row { padding-top: clamp(28px, 4vw, 48px); }
+  .row:last-child { padding-bottom: 0; border-bottom: 0; }
+  .row:focus-visible { outline-offset: 8px; }
+
+  .strip { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; aspect-ratio: 2.2 / 1; }
+  .shot { position: relative; display: block; min-width: 0; overflow: hidden; background: var(--ph); }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ph-label { position: absolute; left: 12px; bottom: 10px; color: var(--muted); font-size: 0.75rem; }
+
+  .row-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .row-titles { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; min-width: 0; }
+  .award {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0;
+    padding: 3px 9px;
+    border: 1px solid var(--fg);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .award svg { width: 1.2em; height: 1.2em; flex: none; }
+  .p-award { justify-self: start; }
+  .row-title {
+    font-size: clamp(1.1rem, 1.7vw, 1.45rem);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+  }
+  .row:hover .row-title, .row:focus-visible .row-title {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 5px;
+  }
+
+  /* Eyes that follow the mouse over the project list (mouse only) */
+  .eyes {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin: -14px 0 0 -14px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s;
+    will-change: transform;
+  }
+  .eyes.on { opacity: 1; }
+  .eyes-emoji { font-size: 28px; line-height: 1; }
+  .eyes-label {
+    margin-top: 22px;
+    padding: 6px 10px;
+    background: #000;
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .has-eyes .row { cursor: none; }
+  }
+
+  .facts { display: grid; grid-template-columns: 1.6fr 1.4fr 0.6fr; gap: 12px 24px; }
+  @media (max-width: 640px) {
+    .facts { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .strip { grid-template-columns: minmax(0, 1fr); aspect-ratio: 4 / 3; }
+    .strip .shot + .shot { display: none; }
+  }
+
+  /* Contact */
+  .contact-link {
+    display: inline-block;
+    color: var(--fg);
+    font-size: clamp(1.6rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.12em;
+    transition: color 0.15s;
+  }
+  .contact-link:hover, .contact-link:focus-visible { color: var(--muted); }
+
+  .foot { padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); color: var(--muted); font-size: 0.875rem; }
+
+  /* Project sheet */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--bg);
+    padding-inline: var(--gutter);
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+  .overlay.in { animation: fade 0.2s ease-out; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding-block: calc(env(safe-area-inset-top, 0px) + 12px) 12px;
+    background: var(--bg);
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 10px 0 4px;
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    background: none;
+    color: var(--fg);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .back svg { width: 1.1em; height: 1.1em; flex: none; }
+  .back:hover, .back:focus-visible { color: var(--muted); }
+
+  .sheet { display: grid; gap: clamp(28px, 4vw, 48px); max-width: 1240px; margin-inline: auto; padding-top: clamp(16px, 4vw, 48px); }
+  .p-title {
+    margin: 0;
+    font-weight: 200;
+    font-size: clamp(2.2rem, 6.4vw, 6rem);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .p-facts { padding-block: 18px; border-block: 1px solid var(--line); }
+  .info { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  @media (min-width: 900px) {
+    .info { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(40px, 6vw, 96px); }
+  }
+  .p-desc { max-width: 32em; margin: 0; font-size: clamp(1.1rem, 1.7vw, 1.4rem); line-height: 1.45; }
+  .credits { margin: 0; }
+  .credits > .k { margin-bottom: 10px; }
+  .credit a { font-weight: 500; color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .credit a:hover, .credit a:focus-visible { color: var(--muted); }
+  .credit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 16px; margin: 0; padding-block: 10px; border-top: 1px solid var(--line); }
+  .credits > .k + .credit { border-top: 0; margin-top: clamp(20px, 3vw, 36px); }
+  .credit dt { color: var(--muted); font-size: 0.9rem; }
+  .credit dd { margin: 0; font-size: 0.95rem; font-weight: 400; }
+  .gallery { display: grid; gap: clamp(12px, 2vw, 24px); }
+  .gallery img { display: block; }
+  /* An image on its own row is narrowed so it fits the screen without scrolling, and centred. */
+  .gallery > img { width: auto; height: auto; max-width: 100%; max-height: calc(100vh - 140px); margin-inline: auto; }
+  /* Square images that follow each other run two to a row on wide screens. */
+  .pair { display: grid; gap: inherit; }
+  .pair img { width: 100%; height: auto; }
+  @media (min-width: 700px) { .pair { grid-template-columns: 1fr 1fr; } }
+  .ph { position: relative; width: 100%; background: var(--ph); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .track { animation: none; width: auto; flex-wrap: wrap; }
+    .group { flex-wrap: wrap; }
+    .group[aria-hidden="true"] { display: none; }
+    .overlay.in { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+
+<style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style></head><body><div id="page">
+  <header class="nav">
+    <p class="nav-hi">
+      <span data-i18n="hi">Hi! It's Kasia.</span>
+      <span class="nav-name">Kasia Cichosz <span class="shh" aria-hidden="true">🤫</span></span>
+    </p>
+    <div class="lang" id="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="pl" aria-pressed="false">PL</button>
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    </div>
+    <a class="mail tip" href="mailto:kat.cichosz@gmail.com" data-tip="Let's talk!" data-i18n-tip="tip" aria-label="Email kat.cichosz@gmail.com">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14"></rect>
+        <polyline points="3,5 12,13 21,5"></polyline>
+      </svg>
+      <span>kat.cichosz@gmail.com</span>
+    </a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="paper" id="paper">
+        <div class="face">
+          <h1 class="giant" data-i18n="title">Graphic design, typography, web building, branding.</h1>
+        </div>
+        <div class="under">
+          <p class="under-text" data-i18n="under">I also do illustration, books, posters, identities, exhibitions, merchandise and more!</p>
+          <button class="refold" id="refold" type="button" data-i18n="refold">Fold back</button>
+        </div>
+        <svg class="flap" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,0 100,0 0,100"></polygon></svg>
+        <span class="tipfill" aria-hidden="true"></span>
+        <span class="hint" aria-hidden="true"><span data-i18n="hint">Psst, a secret</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><line x1="5" y1="5" x2="19" y2="19"></line><polyline points="10,19 19,19 19,10"></polyline></svg></span>
+        <button class="corner" id="corner" type="button" aria-expanded="false" aria-label="Unfold the corner to see what else I make" data-i18n-aria="unfold"></button>
+      </div>
+      <div class="intro">
+        <p><span data-i18n="intro">I have over a decade of experience working with cultural institutions and smaller and bigger brands. On the side, I create apps and websites. I work freelance or together with my wonderful friend as</span> <a class="studio" href="https://instagram.com/studio.kmicic" target="_blank" rel="noopener">studio.kmicic<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><rect x="3" y="3" width="18" height="18"></rect><circle cx="12" cy="12" r="4"></circle><rect x="16.5" y="6.5" width="1.5" height="1.5" fill="currentColor" stroke="none"></rect></svg><span class="sr-only" data-i18n="instagram"> on Instagram</span></a></p>
+        <p class="where">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M12 22 5 12V3h14v9z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+          <span data-i18n="where">Tricity, Poland</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- Client logos: flat black marks on transparent WebP (see CLAUDE.md for the conversion recipe).
+         Size class per logo's own shape: logo-compact for square/compact marks (a touch taller),
+         logo-wide for wide/flat wordmarks (capped by width), nothing for the shared default height. -->
+    <section class="clients" aria-label="Clients">
+      <div class="track">
+        <ul class="group" id="clients">
+          <li class="client"><img class="logo-compact" src="img/clients/muzeum-ii-wojny-swiatowej.webp" alt="Muzeum II Wojny Światowej" loading="lazy"></li>
+          <li class="client"><img src="img/clients/ecs.webp" alt="ECS" loading="lazy"></li>
+          <li class="client"><img class="logo-wide" src="img/clients/muzeum-miasta-gdyni.webp" alt="Muzeum Miasta Gdyni" loading="lazy"></li>
+          <li class="client"><img src="img/clients/muzeum-emigracji.webp" alt="Muzeum Emigracji" loading="lazy"></li>
+          <li class="client"><img class="logo-compact" src="img/clients/ikm-gdansk.webp" alt="Instytut Kultury Miejskiej w Gdańsku" loading="lazy"></li>
+          <li class="client"><img src="img/clients/tubaza-gdynia.webp" alt="tuBaza Gdynia" loading="lazy"></li>
+          <li class="client"><img class="logo-compact" src="img/clients/fundacja-palma.webp" alt="Fundacja Palma" loading="lazy"></li>
+          <li class="client"><img src="img/clients/gcf-gdynia.webp" alt="GCF Gdynia" loading="lazy"></li>
+          <li class="client"><img class="logo-wide" src="img/clients/mah-elblag.webp" alt="Muzeum Archeologiczno-Historyczne w Elblągu" loading="lazy"></li>
+          <li class="client"><img class="logo-big" src="img/clients/muzeum-gdanska.webp" alt="Muzeum Gdańska" loading="lazy"></li>
+          <li class="client"><img class="logo-compact" src="img/clients/mozi.webp" alt="MOZI" loading="lazy"></li>
+          <li class="client"><img class="logo-small" src="img/clients/feta-gdansk.webp" alt="FETA Gdańsk" loading="lazy"></li>
+          <li class="client"><img class="logo-compact" src="img/clients/conlea.webp" alt="Conlea" loading="lazy"></li>
+          <li class="client"><img class="logo-wide" src="img/clients/hevelianum.webp" alt="Hevelianum" loading="lazy"></li>
+          <li class="client"><img class="logo-wide" src="img/clients/kck-kwidzyn.webp" alt="Kwidzyńskie Centrum Kultury" loading="lazy"></li>
+          <li class="client"><img class="logo-compact" src="img/clients/muzeum-narodowe-w-gdansku.webp" alt="Muzeum Narodowe w Gdańsku" loading="lazy"></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="split" id="work">
+      <div class="rail-box">
+        <h2 class="sr-only" data-i18n="work">Work</h2>
+        <div class="filters" id="filters" role="group" aria-label="Filter by role" data-i18n-aria="filterLabel"></div>
+      </div>
+      <div class="rows" id="rows"></div>
+    </section>
+
+    <section class="split" id="contact">
+      <h2 class="rail" data-i18n="contact">Contact</h2>
+      <div>
+        <a class="contact-link tip tip--left" href="mailto:kat.cichosz@gmail.com" data-tip="Let's talk!" data-i18n-tip="tip">kat.cichosz@gmail.com</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">© 2026 Kasia Cichosz. <span data-i18n="rights">All rights reserved.</span></footer>
+</div>
+
+<div class="overlay" id="project" role="dialog" aria-modal="true" aria-labelledby="p-title" hidden>
+  <div class="bar">
+    <button class="back" id="close" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="11,5 4,12 11,19"></polyline></svg>
+      <span data-i18n="back">Back</span>
+    </button>
+  </div>
+  <article class="sheet">
+    <h2 class="p-title" id="p-title"></h2>
+    <p class="award p-award" id="p-award" hidden></p>
+    <div class="facts p-facts" id="p-facts"></div>
+    <div class="info">
+      <p class="p-desc" id="p-desc"></p>
+      <dl class="credits" id="p-credits"></dl>
+    </div>
+    <div class="gallery" id="p-gallery"></div>
+  </article>
+</div>
+
+<div class="eyes" id="eyes" aria-hidden="true"><span class="eyes-emoji">👀</span><span class="eyes-label" data-i18n="seeMore">See more</span></div>
+
+<script>
+  /* Interface text in both languages. */
+  const I18N = {
+    en: {
+      hi: "Hi! It's Kasia.",
+      title: 'Graphic design, typography, web building, branding.',
+      under: 'I also do illustration, books, posters, identities, exhibitions, merchandise and more!',
+      intro: 'I have over a decade of experience working with cultural institutions and smaller and bigger brands. On the side, I create apps and websites. I work freelance or together with my wonderful friend as',
+      instagram: ' on Instagram',
+      where: 'Tricity, Poland',
+      hint: 'Psst, a secret',
+      seeMore: 'See more',
+      unfold: 'Unfold the corner to see what else I make',
+      refold: 'Fold back',
+      back: 'Back',
+      work: 'Work',
+      contact: 'Contact',
+      tip: "Let's talk!",
+      filterLabel: 'Filter by role',
+      viewProject: 'View project',
+      client: 'Client',
+      role: 'Role',
+      year: 'Year',
+      credits: 'Credits',
+      all: 'All',
+      award: 'Award',
+      rights: 'All rights reserved.'
+    },
+    pl: {
+      hi: 'Hej! Tu Kasia.',
+      title: 'Projektowanie graficzne, typografia, strony internetowe, branding.',
+      under: 'Robię też ilustracje, książki, plakaty, identyfikacje, wystawy, gadżety i nie tylko!',
+      intro: 'Mam ponad dziesięć lat doświadczenia we współpracy z instytucjami kultury oraz mniejszymi i większymi markami. Po godzinach tworzę aplikacje i strony internetowe. Pracuję freelancowo albo razem z moją wspaniałą przyjaciółką jako',
+      instagram: ' na Instagramie',
+      where: 'Trójmiasto, Polska',
+      hint: 'Psst, sekret',
+      seeMore: 'Zobacz więcej',
+      unfold: 'Odwiń róg, żeby zobaczyć, co jeszcze robię',
+      refold: 'Zwiń',
+      back: 'Wróć',
+      work: 'Prace',
+      contact: 'Kontakt',
+      tip: 'Pogadajmy!',
+      filterLabel: 'Filtruj wg roli',
+      viewProject: 'Zobacz projekt',
+      client: 'Klient',
+      role: 'Rola',
+      year: 'Rok',
+      credits: 'Credits',
+      all: 'Wszystkie',
+      award: 'Nagroda',
+      rights: 'Wszelkie prawa zastrzeżone.'
+    }
+  };
+
+  /* Role names for the filter. The key is what you put in a project's roles list. */
+  const ROLES = {
+    'Exhibition graphics': { en: 'Exhibition graphics', pl: 'Grafika wystawiennicza' },
+    'Book design': { en: 'Book design', pl: 'Projekt książki' },
+    'Merchandise': { en: 'Merchandise', pl: 'Gadżety' },
+    'Illustration': { en: 'Illustration', pl: 'Ilustracja' },
+    'Identity': { en: 'Identity', pl: 'Identyfikacja wizualna' },
+    'Posters': { en: 'Posters', pl: 'Plakaty' },
+    'Educational materials': { en: 'Educational materials', pl: 'Materiały edukacyjne' }
+  };
+
+  /* Projects. Add one to the top of the list, or edit an existing one.
+     Any text can be a plain string, or { en: '...', pl: '...' } for two languages.
+     roles: what you did, used by the filter on the left (a project can have more than one).
+       New role names also go into ROLES above.
+     role: the same thing in a few words, shown in the list and inside the project.
+     description: the story of the project, in plain sentences.
+     credits: who did what, kept apart from the description. One [label, names] pair per line.
+       Add photographers as [{ en: 'Photos', pl: 'Zdjęcia' }, 'Name']. Empty names are hidden.
+     award: optional { short, detail }, shown as a badge.
+     cover / cover2: the two photos in the list row. images: the gallery inside the project.
+     Image format: { src: 'img/slug/01.webp', w: 1800, h: 1200, alt: '' }.
+     A null src draws a grey placeholder at that size. */
+  const PHOTOS = { en: 'Photos', pl: 'Zdjęcia' };
+  const EDITORS = { en: 'Editors', pl: 'Redakcja' };
+  const PROJECTS = [
+    {
+      slug: 'fauna-exhibition',
+      title: { en: 'FAUNA. Animals at War and Their People', pl: 'FAUNA. Zwierzęta na wojnie i ich ludzie' },
+      client: 'Muzeum II Wojny Światowej',
+      year: '2025',
+      roles: ['Exhibition graphics', 'Merchandise'],
+      role: { en: 'Graphic design, merchandise, studio.kmicic', pl: 'Projekt graficzny, gadżety, studio.kmicic' },
+      description: {
+        en: 'Graphic design for FAUNA, a temporary exhibition at the Museum of the Second World War in Gdańsk, open from 7 May to 28 December 2025. The exhibition looks at the relationships between people and animals during the war. We also designed the exhibition merchandise.',
+        pl: 'Projekt graficzny wystawy czasowej FAUNA w Muzeum II Wojny Światowej w Gdańsku, czynnej od 7 maja do 28 grudnia 2025. Wystawa opowiada o relacjach między ludźmi a zwierzętami podczas wojny. Zaprojektowałyśmy też gadżety wystawy.'
+      },
+      credits: [
+        [{ en: 'Graphic design', pl: 'Projekt graficzny' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Illustrations and animations', pl: 'Ilustracje i animacje' }, 'Hanna Kmieć'],
+        [{ en: 'Merchandise design', pl: 'Projekt gadżetów' }, 'Biuro Kreacja, studio.kmicic'],
+        [{ en: 'Scenography', pl: 'Scenografia' }, 'Biuro Kreacja (Dorota Terlecka, Anna Sabała-Bykowska)'],
+        [{ en: 'Curators', pl: 'Kuratorzy' }, 'Marek Zambrzycki, Monika Krzencessa'],
+        [{ en: 'Historical consultation', pl: 'Konsultacja historyczna' }, 'prof. dr hab. Rafał Wnuk, dr Janusz Marszalec'],
+        [{ en: 'Audio guide', pl: 'Audioprzewodnik' }, 'Movietech, Krystyna Czubówna'],
+        [{ en: 'Honorary patronage', pl: 'Honorowy patronat' }, { en: 'Minister of Climate and Environment', pl: 'Minister Klimatu i Środowiska' }],
+        [{ en: 'Media partners', pl: 'Patroni medialni' }, 'Dzieje.pl, Miesięcznik Dzikie Życie, MuzeOn, Radio Gdańsk'],
+        [{ en: 'Social partner', pl: 'Partner społeczny' }, 'Fundacja Rozwoju Warszawskiego Ogrodu Zoologicznego „PANDA”'],
+        [PHOTOS, 'Alka Murat']
+      ],
+      cover: { src: 'img/fauna-exhibition/cover.webp', w: 1800, h: 1200, alt: '' },
+      cover2: { src: 'img/fauna-exhibition/cover2.webp', w: 1800, h: 2700, alt: '' },
+      images: [
+        { src: 'img/fauna-exhibition/cover.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/01.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/02.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/03.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/04.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/05.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-exhibition/06.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/07.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-exhibition/08.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/09.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/10.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-exhibition/11.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-exhibition/12.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/13.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/14.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-exhibition/15.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-exhibition/16.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/17.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-exhibition/18.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/fauna-exhibition/19.webp', w: 1800, h: 1200, alt: '' }
+      ]
+    },
+    {
+      slug: 'fauna-catalogue',
+      title: { en: 'FAUNA catalogue', pl: 'Katalog FAUNA' },
+      client: 'Muzeum II Wojny Światowej',
+      year: '2025',
+      roles: ['Book design'],
+      role: { en: 'Book design', pl: 'Projekt książki' },
+      description: {
+        en: 'Catalogue accompanying the exhibition FAUNA. Animals at War and Their People at the Museum of the Second World War in Gdańsk. It received a distinction in the Exhibition Catalogues category of Muzealna Książka Roku 2025.',
+        pl: 'Katalog towarzyszący wystawie FAUNA. Zwierzęta na wojnie i ich ludzie w Muzeum II Wojny Światowej w Gdańsku. Otrzymał wyróżnienie w kategorii Katalogi Wystaw konkursu Muzealna Książka Roku 2025.'
+      },
+      award: {
+        short: { en: 'Distinction, Muzealna Książka Roku 2025', pl: 'Wyróżnienie, Muzealna Książka Roku 2025' },
+        detail: {
+          en: 'Distinction in the Exhibition Catalogues category, Muzealna Książka Roku (Museum Book of the Year) 2025',
+          pl: 'Wyróżnienie w kategorii Katalogi Wystaw, Muzealna Książka Roku 2025'
+        }
+      },
+      credits: [
+        [{ en: 'Book design', pl: 'Projekt książki' }, 'Katarzyna Cichosz'],
+        [EDITORS, 'Marek Zambrzycki, Monika Krzencessa'],
+        [{ en: 'Publisher', pl: 'Wydawca' }, 'Muzeum II Wojny Światowej']
+      ],
+      cover: { src: 'img/fauna-catalogue/cover.webp', w: 1800, h: 1200, alt: '' },
+      cover2: { src: 'img/fauna-catalogue/cover2.webp', w: 1800, h: 2700, alt: '' },
+      images: [
+        { src: 'img/fauna-catalogue/01.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-catalogue/02.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-catalogue/03.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/fauna-catalogue/04.webp', w: 1800, h: 1200, alt: '' }
+      ]
+    },
+    {
+      slug: 'zero-waste-lab',
+      title: { en: 'Zero Waste Lab', pl: 'Zero Waste Lab' },
+      client: 'MOZI',
+      year: '2025',
+      roles: ['Identity', 'Posters'],
+      role: { en: 'Visual identity, studio.kmicic', pl: 'Identyfikacja wizualna, studio.kmicic' },
+      description: {
+        en: 'Visual identity for Zero Waste Lab, an exhibition about using bacteria in design at TUBAZA in Gdynia (3–26 October 2025). A modular grid, halftone textures and one golden organic shape, used on posters, an invitation and social media.',
+        pl: 'Identyfikacja wizualna Zero Waste Lab, wystawy o wykorzystaniu bakterii w dizajnie w TUBAZIE w Gdyni (3–26 października 2025). Modułowa siatka, rastrowe tekstury i jedna złota organiczna plama, użyte na plakatach, zaproszeniu i w social mediach.'
+      },
+      credits: [
+        [{ en: 'Visual identity', pl: 'Identyfikacja wizualna' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Client', pl: 'Zlecenie' }, 'MOZI'],
+        [PHOTOS, 'Maja Tybel'],
+        [{ en: 'Partners', pl: 'Partnerzy' }, 'tuBAZA, Gdynia, PPNT Gdynia, Centrum Designu, Centrum Rozwoju Przemysłów Kreatywnych, Ministerstwo Kultury i Dziedzictwa Narodowego, Rozwój Sektorów Kreatywnych']
+      ],
+      cover: { src: 'img/zero-waste-lab/cover.webp', w: 1440, h: 982, alt: '' },
+      cover2: { src: 'img/zero-waste-lab/cover2.webp', w: 1056, h: 1440, alt: '' },
+      images: [
+        { src: 'img/zero-waste-lab/01.webp', w: 1800, h: 942, alt: '' },
+        { src: 'img/zero-waste-lab/02.webp', w: 1386, h: 986, alt: '' },
+        { src: 'img/zero-waste-lab/03.webp', w: 1470, h: 1020, alt: '' },
+        { src: 'img/zero-waste-lab/04.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/zero-waste-lab/05.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/zero-waste-lab/06.webp', w: 1800, h: 1800, alt: '' },
+        { src: 'img/zero-waste-lab/07.webp', w: 1350, h: 1800, alt: '' }
+      ]
+    },
+    {
+      slug: 'mozi-pracownia',
+      title: { en: 'MOZI open ceramics studio', pl: 'Otwarta pracownia ceramiczna MOZI' },
+      client: 'MOZI',
+      year: '2025',
+      roles: ['Posters', 'Identity'],
+      role: { en: 'Graphic design, studio.kmicic', pl: 'Projekt graficzny, studio.kmicic' },
+      description: {
+        en: 'Posters, banners and social posts for the open ceramics studio and glazing workshops run by MOZI at PPNT Gdynia. Blurred cobalt vessels on a paper white or deep blue ground.',
+        pl: 'Plakaty, banery i posty dla otwartej pracowni ceramicznej i warsztatów ze szkliwień MOZI w PPNT Gdynia. Rozmyte kobaltowe naczynia na papierowej bieli albo głębokim granacie.'
+      },
+      credits: [
+        [{ en: 'Graphic design', pl: 'Projekt graficzny' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Client', pl: 'Zlecenie' }, 'MOZI']
+      ],
+      cover: { src: 'img/mozi-pracownia/cover.webp', w: 1440, h: 982, alt: '' },
+      cover2: { src: 'img/mozi-pracownia/cover2.webp', w: 1056, h: 1440, alt: '' },
+      images: [
+        { src: 'img/mozi-pracownia/01.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/mozi-pracownia/02.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/mozi-pracownia/03.webp', w: 1800, h: 1500, alt: '' },
+        { src: 'img/mozi-pracownia/04.webp', w: 1800, h: 1800, alt: '' },
+        { src: 'img/mozi-pracownia/05.webp', w: 1800, h: 1200, alt: '' }
+      ]
+    },
+    {
+      slug: 'dzika-tubaza',
+      title: { en: 'Dzika tuBaza', pl: 'Dzika tuBaza' },
+      client: 'MOZI',
+      year: '2025',
+      roles: ['Identity', 'Illustration', 'Posters', 'Merchandise'],
+      role: { en: 'Visual identity, illustration, studio.kmicic', pl: 'Identyfikacja wizualna, ilustracje, studio.kmicic' },
+      description: {
+        en: 'Identity for Dzika tuBaza, an urban gardening and eco education programme by MOZI at tuBaza and Park Kolibki in Gdynia: garden workshops, herb walks and wild kitchen. A woman hugging a flower made of letters, on a poster, social posts, tote bags, T-shirts, pins and the herbarium notebook Dziki zielnik.',
+        pl: 'Identyfikacja Dzikiej tuBazy, miejskiego programu ogrodniczego i edukacji ekologicznej MOZI w tuBazie i Parku Kolibki w Gdyni: warsztaty ogrodnicze, spacery zielarskie i dzika kuchnia. Kobieta obejmująca kwiat z liter na plakacie, w social mediach, na torbach, koszulkach, przypinkach i w notatniku Dziki zielnik.'
+      },
+      credits: [
+        [{ en: 'Visual identity and illustration', pl: 'Identyfikacja i ilustracje' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Client', pl: 'Zlecenie' }, 'MOZI'],
+        [{ en: 'Partners', pl: 'Partnerzy' }, 'tuBAZA, Gdynia'],
+        [{ en: 'Funding', pl: 'Dofinansowanie' }, { en: 'Voivodeship Fund for Environmental Protection and Water Management in Gdańsk', pl: 'Wojewódzki Fundusz Ochrony Środowiska i Gospodarki Wodnej w Gdańsku' }]
+      ],
+      cover: { src: 'img/dzika-tubaza/cover.webp', w: 1440, h: 982, alt: '' },
+      cover2: { src: 'img/dzika-tubaza/cover2.webp', w: 1056, h: 1440, alt: '' },
+      images: [
+        { src: 'img/dzika-tubaza/01.webp', w: 1260, h: 1800, alt: '' },
+        { src: 'img/dzika-tubaza/02.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/dzika-tubaza/03.webp', w: 1800, h: 975, alt: '' },
+        { src: 'img/dzika-tubaza/04.webp', w: 1011, h: 1800, alt: '' },
+        { src: 'img/dzika-tubaza/05.webp', w: 1060, h: 1060, alt: '' },
+        { src: 'img/dzika-tubaza/06.webp', w: 1060, h: 1060, alt: '' }
+      ]
+    },
+    {
+      slug: 'elblag-70',
+      title: { en: '70 years of the Museum in Elbląg', pl: '70 lat Muzeum w Elblągu' },
+      client: 'Muzeum Archeologiczno-Historyczne w Elblągu',
+      year: '2024',
+      roles: ['Identity', 'Posters'],
+      role: { en: 'Visual identity, studio.kmicic', pl: 'Identyfikacja wizualna, studio.kmicic' },
+      description: {
+        en: 'Visual identity for the 70th anniversary of the Archaeological and Historical Museum in Elbląg: a logo, posters and graphics, built as collages from the museum’s collection and archive photographs.',
+        pl: 'Identyfikacja na 70-lecie Muzeum Archeologiczno-Historycznego w Elblągu: logo, plakaty i grafiki, zbudowane jako kolaże ze zbiorów i archiwalnych zdjęć muzeum.'
+      },
+      credits: [
+        [{ en: 'Graphic design', pl: 'Projekt graficzny' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)']
+      ],
+      cover: { src: 'img/elblag-70/cover.webp', w: 1440, h: 982, alt: '' },
+      cover2: { src: 'img/elblag-70/cover2.webp', w: 1056, h: 1440, alt: '' },
+      images: [
+        { src: 'img/elblag-70/01.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/elblag-70/02.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/elblag-70/03.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/elblag-70/04.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/elblag-70/05.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/elblag-70/06.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/elblag-70/07.webp', w: 1440, h: 1440, alt: '' }
+      ]
+    },
+    {
+      slug: 'mam-bzika',
+      title: { en: 'Mam bzika! Józef Wybicki city game', pl: 'Mam bzika! Gra miejska o Józefie Wybickim' },
+      client: 'Muzeum Gdańska',
+      year: '2024',
+      roles: ['Illustration', 'Merchandise'],
+      role: { en: 'Illustration, graphic design, studio.kmicic', pl: 'Ilustracja, projekt graficzny, studio.kmicic' },
+      description: {
+        en: 'A city game about Józef Wybicki, the author of the Polish anthem: a folded map with tasks around Gdańsk, illustrations, postcards and small gadgets, made for the Year of Józef Wybicki.',
+        pl: 'Gra miejska o Józefie Wybickim, autorze hymnu: rozkładana mapa z zadaniami po Gdańsku, ilustracje, pocztówki i drobne gadżety, przygotowane na Rok Józefa Wybickiego.'
+      },
+      credits: [
+        [{ en: 'Illustration and graphic design', pl: 'Ilustracje i projekt graficzny' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)']
+      ],
+      cover: { src: 'img/mam-bzika/cover.webp', w: 1080, h: 736, alt: '' },
+      cover2: { src: 'img/mam-bzika/cover2.webp', w: 792, h: 1080, alt: '' },
+      images: [
+        { src: 'img/mam-bzika/01.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/mam-bzika/02.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/mam-bzika/03.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/mam-bzika/04.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/mam-bzika/05.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/mam-bzika/06.webp', w: 1080, h: 1080, alt: '' }
+      ]
+    },
+
+    {
+      slug: 'niekongres',
+      title: { en: 'NieKongres 2023', pl: 'NieKongres 2023' },
+      client: 'Instytut Kultury Miejskiej w Gdańsku',
+      year: '2023',
+      roles: ['Identity'],
+      role: { en: 'Visual identity, studio.kmicic', pl: 'Identyfikacja wizualna, studio.kmicic' },
+      description: {
+        en: 'Gdańsk visual identity for NieKongres, the main meeting of cultural animators in Poland: logo, speaker graphics, programme banners and a venue map.',
+        pl: 'Gdańska identyfikacja NieKongresu, głównego spotkania animatorów i animatorek kultury w Polsce: logo, grafiki prelegentów, banery programowe i mapka miejsca wydarzenia.'
+      },
+      credits: [
+        [{ en: 'Visual identity', pl: 'Identyfikacja wizualna' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Photos', pl: 'Zdjęcia' }, 'Rafał Mroziński']
+      ],
+      cover: { src: 'img/niekongres/cover.webp', w: 1440, h: 982, alt: '' },
+      cover2: { src: 'img/niekongres/cover2.webp', w: 1056, h: 1440, alt: '' },
+      images: [
+        { src: 'img/niekongres/01.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/niekongres/02.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/niekongres/03.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/niekongres/04.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/niekongres/05.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/niekongres/06.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/niekongres/07.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/niekongres/08.webp', w: 1440, h: 1440, alt: '' }
+      ]
+    },
+    {
+      slug: 'graj-w-zielone',
+      title: { en: 'Graj w zielone', pl: 'Graj w zielone' },
+      client: 'tuBaza Gdynia',
+      year: '2020–2022',
+      roles: ['Identity', 'Posters', 'Merchandise'],
+      role: { en: 'Visual identity, illustration, studio.kmicic', pl: 'Identyfikacja wizualna, ilustracje, studio.kmicic' },
+      description: {
+        en: 'Identity and materials for Graj w zielone, an outdoor event by tuBaza in Gdynia, made over several editions: illustrated posters, a map and schedule, banners and screen-printed tote bags.',
+        pl: 'Identyfikacja i materiały dla Graj w zielone, wydarzenia plenerowego tuBazy w Gdyni, tworzone przez kilka edycji: ilustrowane plakaty, mapka i rozkład jazdy, banery i torby z sitodrukiem.'
+      },
+      credits: [
+        [{ en: 'Visual identity and illustration', pl: 'Identyfikacja i ilustracje' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Screen printing', pl: 'Sitodruk' }, 'Mateusz Żywicki'],
+        [{ en: 'Organisation', pl: 'Organizacja' }, 'tuBaza Gdynia, MOZI, Fundacja Morze'],
+        [{ en: 'Photos', pl: 'Zdjęcia' }, 'Monika Krzemińska']
+      ],
+      cover: { src: 'img/graj-w-zielone/cover.webp', w: 1440, h: 982, alt: '' },
+      cover2: { src: 'img/graj-w-zielone/cover2.webp', w: 1056, h: 1440, alt: '' },
+      images: [
+        { src: 'img/graj-w-zielone/01.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/graj-w-zielone/02.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/graj-w-zielone/03.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/graj-w-zielone/04.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/graj-w-zielone/05.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/graj-w-zielone/06.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/graj-w-zielone/07.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/graj-w-zielone/08.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/graj-w-zielone/09.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/graj-w-zielone/10.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/graj-w-zielone/11.webp', w: 1080, h: 1080, alt: '' }
+      ]
+    },
+    {
+      slug: 'feta-25',
+      title: { en: 'FETA 25 years', pl: 'FETA 25 lat' },
+      client: 'Gdański Archipelag Kultury / Plama GAK',
+      year: '2022',
+      roles: ['Book design', 'Illustration'],
+      role: { en: 'Book design, studio.kmicic', pl: 'Projekt książki, studio.kmicic' },
+      description: {
+        en: 'Book design for the 25th anniversary of FETA, the International Festival of Open-Air and Street Theatres in Gdańsk. The album gathers the festival’s history, memories from artists and organisers, and archival photographs and posters from every edition.',
+        pl: 'Projekt książki na 25-lecie FETY, Międzynarodowego Festiwalu Teatrów Plenerowych i Ulicznych w Gdańsku. Album zbiera historię festiwalu, wspomnienia artystów i organizatorów oraz archiwalne zdjęcia i plakaty ze wszystkich edycji.'
+      },
+      credits: [
+        [{ en: 'Layout and graphic design', pl: 'Skład i projekt graficzny' }, 'studio.kmicic (Hanna Kmieć, Katarzyna Cichosz)'],
+        [{ en: 'Illustration', pl: 'Ilustracja' }, 'Hanna Kmieć'],
+        [EDITORS, 'Aleksandra Twardowska, Karolina Pacewicz'],
+        [{ en: 'Texts', pl: 'Teksty' }, 'Ewelina Damps, Łukasz Rudziński, Przemysław Szczygieł'],
+        [{ en: 'Consultant', pl: 'Konsultacja' }, 'dr Katarzyna Kręglewska-Powązka']
+      ],
+      cover: { src: 'img/feta-25/cover.webp', w: 1800, h: 1200, alt: '' },
+      cover2: { src: 'img/feta-25/02.webp', w: 1800, h: 2700, alt: '' },
+      images: [
+        { src: 'img/feta-25/cover.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/feta-25/02.webp', w: 1800, h: 2700, alt: '' },
+        { src: 'img/feta-25/03.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/feta-25/04.webp', w: 1500, h: 1000, alt: '' },
+        { src: 'img/feta-25/05.webp', w: 720, h: 720, alt: '' },
+        { src: 'img/feta-25/06.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/feta-25/07.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/feta-25/08.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/feta-25/09.webp', w: 1440, h: 1440, alt: '' }
+      ]
+    },
+    {
+      slug: 'bezwstydnik',
+      title: { en: 'Bezwstydnik', pl: 'Bezwstydnik' },
+      client: { en: 'Diploma project, Academy of Fine Arts in Gdańsk', pl: 'Projekt dyplomowy, Akademia Sztuk Pięknych w Gdańsku' },
+      year: '2022',
+      roles: ['Book design'],
+      role: { en: 'Author, book design', pl: 'Autorstwo, projekt książki' },
+      description: {
+        en: 'Bezwstydnik, or a practical guide to not getting lost in girls’ adolescence. A warm, accepting book for girls aged about 8 to 12, covering the first half of adolescence: changing bodies, intimate areas, periods, moods and emotions, visiting the gynaecologist, and how boys change too. It is built from public-domain artworks and practical advice, and comes with stickers and a postcard. Published by Wydawnictwo ASP in Gdańsk in 2022.',
+        pl: 'Bezwstydnik, czyli praktyczny poradnik o tym, jak się nie pogubić w dziewczyńskim dojrzewaniu. Ciepła, akceptująca książka dla dziewczyn w wieku ok. 8–12 lat, o pierwszej połowie dojrzewania: zmieniającym się ciele, strefach intymnych, miesiączce, nastrojach i emocjach, wizycie u ginekologa oraz o tym, jak zmieniają się chłopcy. Powstała z dzieł sztuki z domeny publicznej i praktycznych porad, a w zestawie są naklejki i pocztówka. Wydana przez Wydawnictwo ASP w Gdańsku w 2022 roku.'
+      },
+      award: {
+        short: { en: 'Distinguished diploma, Dyplomy FNC', pl: 'Wyróżniony dyplom, Dyplomy FNC' },
+        detail: {
+          en: 'Diploma selected for Dyplomy FNC, the yearly selection of the best diploma projects by FONT nie czcionka!',
+          pl: 'Dyplom wyróżniony w zestawieniu Dyplomy FNC, organizowanym przez FONT nie czcionka!'
+        }
+      },
+      credits: [
+        [{ en: 'Author and design', pl: 'Autorstwo i projekt' }, 'Katarzyna Cichosz'],
+        [{ en: 'Diploma supervisor', pl: 'Promotor' }, 'dr Anita Wasik'],
+        [{ en: 'Publisher', pl: 'Wydawca' }, 'Wydawnictwo ASP'],
+        [{ en: 'With the help of', pl: 'Przy wsparciu' }, 'Anita Wasik, Joanna Czaplewska, dr Beata Wróbel, Adam Świerżewski'],
+        [{ en: 'Institution', pl: 'Uczelnia' }, 'Akademia Sztuk Pięknych w Gdańsku']
+      ],
+      links: [
+        [{ en: 'Press', pl: 'Prasa' }, { en: 'Trójmiasto.pl (Wyborcza)', pl: 'Trójmiasto.pl (Wyborcza)' }, 'https://trojmiasto.wyborcza.pl/trojmiasto/7,35612,28026031,artystka-z-asp-w-gdansku-stworzyla-ksiazke-z-ktora-mozna-sie.html'],
+        [{ en: 'Selection', pl: 'Wyróżnienie' }, 'Dyplomy FNC, FONT nie czcionka!', 'https://dyplomy.fontnieczcionka.pl/node/518'],
+        [{ en: 'Academy news', pl: 'Aktualności ASP' }, { en: 'Zbrojownia Sztuki', pl: 'Zbrojownia Sztuki' }, 'https://www.zbrojowniasztuki.pl/wydarzenia/sukcesy/sukces-naszych-absolwentow,2580']
+      ],
+      cover: { src: 'img/bezwstydnik/cover.webp', w: 1800, h: 1200, alt: '' },
+      cover2: { src: 'img/bezwstydnik/cover2.webp', w: 1800, h: 1879, alt: '' },
+      images: [
+        { src: 'img/bezwstydnik/cover.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/bezwstydnik/cover2.webp', w: 1800, h: 1879, alt: '' },
+        { src: 'img/bezwstydnik/01.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/bezwstydnik/02.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/bezwstydnik/03.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/bezwstydnik/04.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/bezwstydnik/05.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/bezwstydnik/06.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/bezwstydnik/07.webp', w: 1800, h: 1200, alt: '' },
+        { src: 'img/bezwstydnik/08.webp', w: 1800, h: 1200, alt: '' }
+      ]
+    },
+    {
+      slug: 'glena',
+      title: { en: 'GLËNA', pl: 'GLËNA' },
+      client: 'MOZI, Pracownie Projektowe',
+      year: '2021',
+      roles: ['Posters', 'Merchandise'],
+      role: { en: 'Graphic design, studio.kmicic', pl: 'Projekt graficzny, studio.kmicic' },
+      description: {
+        en: 'Graphics for GLËNA, a ceramics exhibition in Gdynia by MOZI and Pracownie Projektowe. In 2021 we designed ceramic figures with a Kashubian theme, and for the second edition two years later a poster, banners and tote bags.',
+        pl: 'Grafiki do GLËNY, wystawy ceramiki w Gdyni organizowanej przez MOZI i Pracownie Projektowe. W 2021 zaprojektowałyśmy ceramiczne figurki w kaszubskim motywie, a przy drugiej edycji dwa lata później plakat, banery i torby.'
+      },
+      credits: [
+        [{ en: 'Graphic design', pl: 'Projekt graficzny' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Client', pl: 'Zlecenie' }, 'MOZI, Pracownie Projektowe'],
+        [{ en: 'Photos', pl: 'Zdjęcia' }, 'MOZI, Rafał Kołsut']
+      ],
+      cover: { src: 'img/glena/cover.webp', w: 1440, h: 982, alt: '' },
+      cover2: { src: 'img/glena/cover2.webp', w: 1056, h: 1440, alt: '' },
+      images: [
+        { src: 'img/glena/01.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/glena/02.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/glena/03.webp', w: 1440, h: 1440, alt: '' },
+        { src: 'img/glena/04.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/glena/05.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/glena/06.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/glena/07.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/glena/08.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/glena/09.webp', w: 1440, h: 1440, alt: '' }
+      ]
+    },
+    {
+      slug: 'swieto-wielkiej-alei',
+      title: { en: 'Święto Wielkiej Alei', pl: 'Święto Wielkiej Alei' },
+      client: 'Fundacja Palma',
+      year: '2021',
+      roles: ['Identity', 'Posters'],
+      role: { en: 'Visual identity, studio.kmicic', pl: 'Identyfikacja wizualna, studio.kmicic' },
+      description: {
+        en: 'Visual identity for Święto Wielkiej Alei, a neighbourhood festival by Fundacja Palma: a poster, flyers, flags and bunting.',
+        pl: 'Identyfikacja wizualna Święta Wielkiej Alei, sąsiedzkiego festiwalu Fundacji Palma: plakat, ulotki, flagi i chorągiewki.'
+      },
+      credits: [
+        [{ en: 'Graphic design', pl: 'Projekt graficzny' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Photos', pl: 'Zdjęcia' }, 'Renata Dąbrowska']
+      ],
+      cover: { src: 'img/swieto-wielkiej-alei/cover.webp', w: 1080, h: 736, alt: '' },
+      cover2: { src: 'img/swieto-wielkiej-alei/cover2.webp', w: 792, h: 1080, alt: '' },
+      images: [
+        { src: 'img/swieto-wielkiej-alei/01.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/swieto-wielkiej-alei/02.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/swieto-wielkiej-alei/03.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/swieto-wielkiej-alei/04.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/swieto-wielkiej-alei/05.webp', w: 1080, h: 1080, alt: '' }
+      ]
+    },
+    {
+      slug: 'kolej-na-wyzwanie',
+      title: { en: 'Kolej na wyzwanie', pl: 'Kolej na wyzwanie' },
+      client: 'Muzeum Miasta Gdyni, Muzeum Emigracji',
+      year: '2021',
+      roles: ['Illustration'],
+      role: { en: 'Illustration, graphic design, studio.kmicic', pl: 'Ilustracje, projekt graficzny, studio.kmicic' },
+      description: {
+        en: 'A map of tasks for children during the winter holidays, set around the railway station and the two museums, with illustrated characters. Finishing it earned pins and a Gdynia Monopoly.',
+        pl: 'Mapa zadań dla dzieci na ferie, poprowadzona wokół dworca i dwóch muzeów, z ilustrowanymi postaciami. Za jej ukończenie były przypinki i gdyńskie Monopoly.'
+      },
+      credits: [
+        [{ en: 'Illustration and graphic design', pl: 'Ilustracje i projekt graficzny' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)']
+      ],
+      cover: { src: 'img/kolej-na-wyzwanie/cover.webp', w: 1080, h: 736, alt: '' },
+      cover2: { src: 'img/kolej-na-wyzwanie/cover2.webp', w: 792, h: 1080, alt: '' },
+      images: [
+        { src: 'img/kolej-na-wyzwanie/01.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/02.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/03.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/04.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/05.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/06.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/07.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/08.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/09.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/10.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/11.webp', w: 1080, h: 1080, alt: '' },
+        { src: 'img/kolej-na-wyzwanie/12.webp', w: 1080, h: 1080, alt: '' }
+      ]
+    },
+    {
+      slug: 'czapki-ikm',
+      title: { en: 'Hats for IKM Gdańsk', pl: 'Czapki dla IKM Gdańsk' },
+      client: 'Instytut Kultury Miejskiej w Gdańsku',
+      year: '2021',
+      roles: ['Merchandise'],
+      role: { en: 'Design, studio.kmicic', pl: 'Projekt, studio.kmicic' },
+      description: {
+        en: 'Two knitted hats for IKM’s series illustrating Gdańsk districts: Biskupia Górka, shaped like the hill with a full moon on top, and Nowy Port.',
+        pl: 'Dwie czapki do serii IKM ilustrującej dzielnice Gdańska: czapka Biskupiej Górki w kształcie górki z księżycem w pełni na czubku oraz Nowy Port.'
+      },
+      credits: [
+        [{ en: 'Design, Biskupia Górka', pl: 'Projekt, Biskupia Górka' }, 'studio.kmicic (Katarzyna Cichosz, Hanna Kmieć)'],
+        [{ en: 'Design, Nowy Port', pl: 'Projekt, Nowy Port' }, 'Hanna Kmieć'],
+        [{ en: 'Photos', pl: 'Zdjęcia' }, 'Daria Szczygieł / IKM']
+      ],
+      cover: { src: 'img/czapki-ikm/cover.webp', w: 1800, h: 1227, alt: '' },
+      cover2: { src: 'img/czapki-ikm/cover2.webp', w: 1364, h: 1860, alt: '' },
+      images: [
+        { src: 'img/czapki-ikm/01.webp', w: 1800, h: 1199, alt: '' },
+        { src: 'img/czapki-ikm/02.webp', w: 1364, h: 2048, alt: '' },
+        { src: 'img/czapki-ikm/03.webp', w: 1364, h: 2048, alt: '' },
+        { src: 'img/czapki-ikm/04.webp', w: 1364, h: 2048, alt: '' },
+        { src: 'img/czapki-ikm/05.webp', w: 1364, h: 2048, alt: '' },
+        { src: 'img/czapki-ikm/06.webp', w: 1364, h: 2048, alt: '' },
+        { src: 'img/czapki-ikm/07.webp', w: 1364, h: 2048, alt: '' },
+        { src: 'img/czapki-ikm/08.webp', w: 1800, h: 1199, alt: '' }
+      ]
+    }
+  ];
+
+  (function () {
+    var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><line x1="6" y1="18" x2="18" y2="6"></line><polyline points="8,6 18,6 18,16"></polyline></svg>';
+    var AWARD_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" aria-hidden="true"><polygon points="12,2 14.5,9.5 22,12 14.5,14.5 12,22 9.5,14.5 2,12 9.5,9.5"></polygon></svg>';
+    var page = document.getElementById('page');
+    var overlay = document.getElementById('project');
+    var closeBtn = document.getElementById('close');
+    var rows = document.getElementById('rows');
+    var filters = document.getElementById('filters');
+    var eyes = document.getElementById('eyes');
+    var current = null;
+    var lastFocus = null;
+    var openedByClick = false;
+    var activeRole = 'All';
+
+    /* Language: saved choice, otherwise the browser language. */
+    var lang = 'en';
+    try {
+      var saved = localStorage.getItem('lang');
+      if (saved === 'pl' || saved === 'en') lang = saved;
+      else if (/^pl/i.test(navigator.language || '')) lang = 'pl';
+    } catch (e) {}
+    function T(key) { return I18N[lang][key]; }
+    function L(v) {
+      if (v == null) return '';
+      return typeof v === 'string' ? v : (v[lang] || v.en || '');
+    }
+
+    /* Client marquee: clone the list once so it loops without a gap. */
+    var group = document.getElementById('clients');
+    var clone = group.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.setAttribute('aria-hidden', 'true');
+    group.parentNode.appendChild(clone);
+
+    /* Folded corner. The size of the fold, c, is animated by hand so the peel and the fold-back
+       follow the same diagonal both ways. Hover peeks, click peels the sheet away, "Fold back" returns. */
+    var paper = document.getElementById('paper');
+    var corner = document.getElementById('corner');
+    var refold = document.getElementById('refold');
+    var flap = paper.querySelector('.flap');
+    var tipfill = paper.querySelector('.tipfill');
+    var hint = paper.querySelector('.hint');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var foldC = 0;
+    var foldRaf = null;
+    var isOpen = false;
+    function clamp01(x) { return Math.max(0, Math.min(1, x)); }
+    function restC() { return Math.min(52, Math.max(32, window.innerWidth * 0.042)); }
+    function openC() { return paper.offsetWidth + paper.offsetHeight + 2; }
+    function renderFold(c) {
+      foldC = c;
+      var ph = paper.offsetHeight;
+      paper.style.setProperty('--c', c + 'px');
+      paper.style.setProperty('--ph', ph + 'px');
+      var fade = String(clamp01((ph * 1.1 - c) / (ph * 0.1)));
+      flap.style.opacity = fade;
+      tipfill.style.opacity = fade;
+      hint.style.opacity = isOpen ? '0' : String(clamp01((restC() + 90 - c) / 60));
+    }
+    function foldTo(target, ms, done) {
+      if (foldRaf) cancelAnimationFrame(foldRaf);
+      var from = foldC;
+      var t0 = null;
+      if (reduce || !ms) { foldRaf = null; renderFold(target); if (done) done(); return; }
+      function step(t) {
+        if (t0 === null) t0 = t;
+        var p = Math.min(1, (t - t0) / ms);
+        var e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        renderFold(from + (target - from) * e);
+        if (p < 1) { foldRaf = requestAnimationFrame(step); } else { foldRaf = null; if (done) done(); }
+      }
+      foldRaf = requestAnimationFrame(step);
+    }
+    function measurePaper() {
+      if (foldRaf) return;
+      renderFold(isOpen ? openC() : restC());
+    }
+    window.addEventListener('resize', measurePaper);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measurePaper);
+    function peek() { if (!isOpen) foldTo(restC() + 22, 180); }
+    function unpeek() { if (!isOpen) foldTo(restC(), 180); }
+    corner.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') peek(); });
+    corner.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') unpeek(); });
+    corner.addEventListener('focus', peek);
+    corner.addEventListener('blur', unpeek);
+    corner.addEventListener('click', function () {
+      isOpen = true;
+      paper.classList.add('open');
+      corner.setAttribute('aria-expanded', 'true');
+      foldTo(openC(), 0);
+      refold.focus();
+    });
+    refold.addEventListener('click', function () {
+      isOpen = false;
+      paper.classList.remove('open');
+      corner.setAttribute('aria-expanded', 'false');
+      foldTo(restC(), 0);
+      corner.focus({ preventScroll: true });
+    });
+
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    }
+
+    function fillAward(node, text) {
+      node.textContent = '';
+      node.appendChild(document.createTextNode(text));
+    }
+
+    /* A real photo, or a grey block of the same proportions when there is no file yet. */
+    function picture(img, cls) {
+      if (img.src) {
+        var i = document.createElement('img');
+        i.src = img.src;
+        i.alt = img.alt || '';
+        i.width = img.w;
+        i.height = img.h;
+        i.loading = 'lazy';
+        i.decoding = 'async';
+        return i;
+      }
+      var d = el('div', cls || 'ph');
+      d.style.aspectRatio = img.w + ' / ' + img.h;
+      d.appendChild(el('span', 'ph-label', 'Placeholder'));
+      return d;
+    }
+
+    function shot(img) {
+      var s = el('span', 'shot');
+      if (img.src) {
+        s.appendChild(picture(img));
+      } else {
+        s.appendChild(el('span', 'ph-label', 'Placeholder'));
+      }
+      return s;
+    }
+
+    function fact(label, value) {
+      var d = el('span');
+      d.appendChild(el('span', 'k', label));
+      d.appendChild(el('span', 'v', value));
+      return d;
+    }
+
+    function facts(box, p) {
+      box.textContent = '';
+      box.appendChild(fact(T('client'), L(p.client)));
+      box.appendChild(fact(T('role'), L(p.role)));
+      box.appendChild(fact(T('year'), L(p.year)));
+    }
+
+    /* Role filters, built from the roles used in PROJECTS */
+    var roleList = [];
+    PROJECTS.forEach(function (p) {
+      p.roles.forEach(function (r) { if (roleList.indexOf(r) < 0) roleList.push(r); });
+    });
+
+    function countFor(role) {
+      if (role === 'All') return PROJECTS.length;
+      return PROJECTS.filter(function (p) { return p.roles.indexOf(role) >= 0; }).length;
+    }
+
+    function renderFilters() {
+      filters.textContent = '';
+      ['All'].concat(roleList).forEach(function (role) {
+        var b = el('button', 'filter');
+        b.type = 'button';
+        b.dataset.role = role;
+        b.setAttribute('aria-pressed', String(role === activeRole));
+        b.appendChild(el('span', null, role === 'All' ? T('all') : L(ROLES[role] || role)));
+        filters.appendChild(b);
+      });
+    }
+
+    function renderRows() {
+      rows.textContent = '';
+      PROJECTS.filter(function (p) {
+        return activeRole === 'All' || p.roles.indexOf(activeRole) >= 0;
+      }).forEach(function (p) {
+        var b = el('button', 'row');
+        b.type = 'button';
+        b.dataset.slug = p.slug;
+        var strip = el('span', 'strip');
+        strip.appendChild(shot(p.cover));
+        if (p.cover2) strip.appendChild(shot(p.cover2));
+        var head = el('span', 'row-head');
+        var titles = el('span', 'row-titles');
+        titles.appendChild(el('span', 'row-title', L(p.title)));
+        if (p.award) {
+          var chip = el('span', 'award');
+          fillAward(chip, L(p.award.short));
+          titles.appendChild(chip);
+        }
+        head.appendChild(titles);
+        var f = el('span', 'facts');
+        facts(f, p);
+        b.appendChild(strip);
+        b.appendChild(head);
+        b.appendChild(f);
+        rows.appendChild(b);
+      });
+    }
+
+    filters.addEventListener('click', function (e) {
+      var b = e.target.closest('.filter');
+      if (!b) return;
+      activeRole = b.dataset.role;
+      hideEyes();
+      renderFilters();
+      renderRows();
+    });
+
+    /* Static text: everything marked data-i18n, data-i18n-tip or data-i18n-aria */
+    function applyLang() {
+      document.documentElement.lang = lang;
+      [].forEach.call(document.querySelectorAll('[data-i18n]'), function (n) {
+        n.textContent = T(n.getAttribute('data-i18n'));
+      });
+      [].forEach.call(document.querySelectorAll('[data-i18n-tip]'), function (n) {
+        n.setAttribute('data-tip', T(n.getAttribute('data-i18n-tip')));
+      });
+      [].forEach.call(document.querySelectorAll('[data-i18n-aria]'), function (n) {
+        n.setAttribute('aria-label', T(n.getAttribute('data-i18n-aria')));
+      });
+      [].forEach.call(document.querySelectorAll('#lang button'), function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
+      });
+    }
+
+    function setLang(next) {
+      if (next === lang) return;
+      lang = next;
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+      applyLang();
+      renderFilters();
+      renderRows();
+      if (!overlay.hidden) { current = null; sync(); }
+      window.requestAnimationFrame(measurePaper);
+    }
+    document.getElementById('lang').addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (b) setLang(b.getAttribute('data-lang'));
+    });
+
+    function show(p) {
+      if (current === p.slug) return;
+      current = p.slug;
+      document.getElementById('p-title').textContent = L(p.title);
+      facts(document.getElementById('p-facts'), p);
+      document.getElementById('p-desc').textContent = L(p.description);
+      var pa = document.getElementById('p-award');
+      if (p.award) { fillAward(pa, L(p.award.short)); pa.hidden = false; } else { pa.hidden = true; }
+      var cr = document.getElementById('p-credits');
+      cr.textContent = '';
+      cr.appendChild(el('dt', 'k', T('credits')));
+      var list = p.credits.slice();
+      if (p.award) list.push([T('award'), L(p.award.detail)]);
+      var shown = 0;
+      list.forEach(function (c) {
+        var value = L(c[1]);
+        if (!value) return;
+        var row = el('div', 'credit');
+        row.appendChild(el('dt', null, L(c[0])));
+        row.appendChild(el('dd', null, value));
+        cr.appendChild(row);
+        shown++;
+      });
+      (p.links || []).forEach(function (c) {
+        var row = el('div', 'credit');
+        row.appendChild(el('dt', null, L(c[0])));
+        var dd = el('dd');
+        var a = el('a', null, L(c[1]));
+        a.href = c[2]; a.target = '_blank'; a.rel = 'noopener';
+        dd.appendChild(a); row.appendChild(dd); cr.appendChild(row); shown++;
+      });
+      cr.hidden = shown === 0;
+      var g = document.getElementById('p-gallery');
+      g.textContent = '';
+      var isSq = function (im) { return Math.abs(im.w / im.h - 1) < 0.06; };
+      for (var n = 0; n < p.images.length; n++) {
+        var im = p.images[n];
+        if (isSq(im) && p.images[n + 1] && isSq(p.images[n + 1])) {
+          var pair = el('div', 'pair');
+          pair.appendChild(picture(im));
+          pair.appendChild(picture(p.images[n + 1]));
+          g.appendChild(pair);
+          n++;
+        } else {
+          g.appendChild(picture(im));
+        }
+      }
+      overlay.hidden = false;
+      overlay.classList.remove('in');
+      void overlay.offsetWidth;
+      overlay.classList.add('in');
+      overlay.scrollTop = 0;
+      document.documentElement.classList.add('locked');
+      page.inert = true;
+      closeBtn.focus();
+    }
+
+    function hide() {
+      if (overlay.hidden) return;
+      overlay.hidden = true;
+      current = null;
+      document.documentElement.classList.remove('locked');
+      page.inert = false;
+      if (lastFocus && lastFocus.isConnected && lastFocus.focus) lastFocus.focus();
+    }
+
+    /* The URL hash decides what is open, so a link like #feta-25 opens that project. */
+    function sync() {
+      var slug = '';
+      try { slug = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
+      var p = PROJECTS.filter(function (x) { return x.slug === slug; })[0];
+      if (p) show(p); else hide();
+    }
+
+    function openProject(slug) {
+      openedByClick = true;
+      try { location.hash = slug; } catch (e) {}
+      sync();
+    }
+
+    function closeProject() {
+      hide();
+      var hasHash = false;
+      try { hasHash = !!location.hash; } catch (e) {}
+      if (!hasHash) return;
+      if (openedByClick) {
+        openedByClick = false;
+        try { history.back(); } catch (e) {}
+      } else {
+        try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+      }
+    }
+
+    rows.addEventListener('click', function (e) {
+      var t = e.target.closest('.row');
+      if (!t) return;
+      lastFocus = t;
+      hideEyes();
+      openProject(t.dataset.slug);
+    });
+
+    /* Eyes follow the mouse over the project list. Mouse only, never on touch. */
+    var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    function hideEyes() { eyes.classList.remove('on'); }
+    if (fine) {
+      document.documentElement.classList.add('has-eyes');
+      rows.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        if (e.target.closest('.row')) {
+          eyes.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
+          eyes.classList.add('on');
+        } else {
+          hideEyes();
+        }
+      });
+      rows.addEventListener('pointerleave', hideEyes);
+      window.addEventListener('scroll', hideEyes, { passive: true });
+    }
+
+    closeBtn.addEventListener('click', closeProject);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeProject(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !overlay.hidden) closeProject();
+    });
+    window.addEventListener('hashchange', sync);
+
+    applyLang();
+    renderFilters();
+    renderRows();
+    measurePaper();
+    sync();
+  })();
+</script>
+</body></html>
